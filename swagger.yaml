@@ -1,0 +1,417 @@
+openapi: 3.0.0
+info:
+  title: Swagger API
+  version: 0.0.1
+servers:
+  - url: http://localhost:3001/api/v1
+
+
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        description: register a new account
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+            example:
+              email: test@gmail.com
+              password: "***"
+      responses:
+        '201':
+          description: CREATED
+        '422':
+          $ref: '#/components/schemas/Error422'
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        description: login account
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+            example:
+              email: test@gmail.com
+              password: "***"
+      responses:
+        '200':
+          description: OK
+        '404':
+          $ref: '#/components/schemas/Error404'
+        '422':
+          $ref: '#/components/schemas/Error422'
+
+  /auth/refresh_token:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        description: generate a new accesstoken
+        content:
+          application/json:
+            schema:
+              properties:
+                refresh_token:
+                  type: string
+                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiYWRhY2E4NTMtOTlmOS00MDJiLWE4YzMtNjFiNTVlZWY2NGU4In0sImlhdCI6MTY2MDY0MDU2MywiZXhwIjoxNjYwNjQxMTYzfQ.kewTiEh-8nVXYlTPWjC9_XkpJ_nMonm_NWnCyAwiYVA"
+              required:
+                - refresh_token
+      responses:
+        '201':
+          description: CREATED
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+        '422':
+          $ref: '#/components/schemas/Error422'
+
+
+  /project/create:
+    post:
+      tags:
+        - Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  example: "project example"
+                domain:
+                  type: string
+                  example: "https://example.com"
+              required:
+                - name
+                - domain
+      responses:
+        '201':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                properties:
+                  project:
+                    $ref: '#/components/schemas/Project'
+                  api_key:
+                    type: string
+                    example: a127ffc4-5291-4719-9d41-afb57e149f82
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+
+  /project/{project_id}/update:
+    put:
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  example: "project example"
+                domain:
+                  type: string
+                  example: "https://example.com"
+              required:
+                - name
+                - domain
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  project:
+                    $ref: '#/components/schemas/Project'
+                  api_key:
+                    type: string
+                    example: a127ffc4-5291-4719-9d41-afb57e149f82
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+
+  /project/{project_id}/delete:
+    delete:
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+        '404':
+          $ref: '#/components/schemas/Error404'
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+
+  /project/list:
+    get:
+      tags:
+        - Project
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            example: 20
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: '#/components/schemas/Project'
+                            - properties:
+                                api_key:
+                                  type: string
+                                  example: 2df7bf73-62d3-4f45-8d7b-62a103a58b4e
+                  - $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+
+  /project/{project_id}:
+    get:
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+            example: 1ec52d05-1a03-4b23-b6e5-aa233c725054
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Project'
+                  - properties:
+                      api_key:
+                        type: string
+                        example: 2df7bf73-62d3-4f45-8d7b-62a103a58b4e
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+        '404':
+          $ref: '#/components/schemas/Error404'
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+
+  schemas:
+    Error422:
+      description: ERROR_FORMAT_PARAMS, ERROR_FORMAT_BODY, ERROR_FORMAT_QUERY
+      type: object
+      properties:
+        message:
+          type: string
+          example: ERROR_FORMAT_PARAMS
+        errors:
+          type: object
+          properties:
+            key:
+              type: object
+              properties:
+                message:
+                  type : string
+                  example : project_id is a required field
+    Error401:
+      description: ERROR_UNAUTHORIZED
+    Error403:
+      description: ERROR_FORBIDDEN
+    Error404:
+      description: ERROR_NOT_FOUND
+
+    Credential:
+      type: object
+      properties:
+        id:
+          type: string
+          example: abcd123
+        email:
+          type: string
+          example: test@gmail.com
+        password:
+          type: string
+          example: "***"
+        user_id:
+          type: string
+          example: user12312
+        created_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+        updated_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+        is_deleted:
+          type: boolean
+          example: false
+      required:
+        - id
+        - email
+        - password
+        - user_id
+        - is_deleted
+        - created_at
+        - updated_at
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: abcd123
+        email:
+          type: string
+          format: email
+          example: test@gmail.com
+        created_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+        updated_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+        is_deleted:
+          type: boolean
+          example:  false
+      required:
+        - id
+        - email
+        - created_at
+        - updated_at
+        - is_deleted
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: project123
+        name:
+          type: string
+          example: project example
+        domain:
+          type: string
+          example: https://example.com
+        created_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+        updated_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+        is_deleted:
+          type: boolean
+          example:  false
+      required:
+        - id
+        - name
+        - domain
+        - created_at
+        - updated_at
+        - is_deleted
+
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: api_key123
+        project_id:
+          type: string
+          format: uuid
+          example: project123
+        domain:
+          type: string
+          format: uuid
+          example: https://example.com
+        created_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+        updated_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+        is_deleted:
+          type: boolean
+          example:  false
+      required:
+        - id
+        - project_id
+        - domain
+        - created_at
+        - updated_at
+        - is_deleted
+
+    Pagination:
+      type: object
+      properties:
+        paging:
+          type: object
+          properties:
+            page:
+              type: integer
+              example: 1
+            page_size:
+              type: integer
+              example: 20
+            total_page:
+              type: integer
+              example: 10
