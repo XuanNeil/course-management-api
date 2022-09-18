@@ -1,11 +1,26 @@
 import {
 	ICredentialRepositoryDetailParams,
 	ICredentialQuery,
+	ICredentialRepositoryCreateParams,
 } from 'src/repositories/credential_repository/models/credential';
-import { ClientSession } from 'mongoose';
+import { ClientSession, Types } from 'mongoose';
 import { CredentialModel, ICredentialDocument } from '../../../database/models';
+import { hashPassword } from '../../libs/bcrypt';
 
 export class CredentialRepository {
+	async create(
+		_params: ICredentialRepositoryCreateParams,
+		_session: ClientSession | null = null,
+	): Promise<ICredentialDocument> {
+		const credential = new CredentialModel({
+			id: new Types.ObjectId(),
+			email: _params.email.toLocaleLowerCase().trim(),
+			password: hashPassword(_params.password),
+			user_id: _params.user_id,
+		});
+		return await credential.save({ session: _session });
+	}
+
 	async detail(
 		_params: ICredentialRepositoryDetailParams,
 		_session: ClientSession | null = null,
