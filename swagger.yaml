@@ -36,7 +36,7 @@ paths:
       tags:
         - Auth
       requestBody:
-        description: login account
+        description: Login account 25
         content:
           application/json:
             schema:
@@ -46,11 +46,13 @@ paths:
                 password:
                   type: string
             example:
-              email: test@gmail.com
-              password: "***"
+              email: admin@gmail.com
+              password: "********"
       responses:
         '200':
           description: OK
+        '401':
+          $ref: "#/components/schemas/Error401"
         '404':
           $ref: '#/components/schemas/Error404'
         '422':
