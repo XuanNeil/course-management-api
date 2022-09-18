@@ -3,16 +3,14 @@ import { CredentialModel, UserModel } from './models';
 import { credential, user } from './data';
 
 export async function DBConnect() {
-	return await mongoose
-		.connect(process.env.DATABASE_URL as string)
-		.catch(() => {
-			console.log('connect mongoose error');
-		});
+	return await mongoose.connect(process.env.DATABASE_URL as string).catch((err) => {
+		console.log('connect mongoose error', err);
+	});
 }
 
 export async function DBDisconnect() {
-	return await mongoose.connection.close().catch(() => {
-		console.log('disconnect mongoose error');
+	return await mongoose.connection.close().catch((err) => {
+		console.log('disconnect mongoose error', err);
 	});
 }
 

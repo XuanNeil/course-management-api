@@ -1,9 +1,14 @@
-import express from 'express';
+import 'express-async-errors';
+import express, { NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import YAML from 'yamljs';
 import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
+import { mainRouters } from './routers';
+import { CustomError, ErrorsMessage } from './contants';
+import HttpStatusCodes from 'http-status-codes';
+import helmet from 'helmet';
 
 // env configs
 dotenv.config();
@@ -33,7 +38,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // Security (helmet recommended in express docs)
 if (process.env.NODE_ENV === 'production') {
-	console.log('production');
+	app.use(helmet());
 }
 
 /***********************************************************************************
@@ -41,8 +46,18 @@ if (process.env.NODE_ENV === 'production') {
  **********************************************************************************/
 
 // Add api router
-app.use('/api/v1', (req, res) => {
-	res.send('Hello World!');
+app.use('/api/v1', mainRouters);
+
+app.use((err: Error | CustomError, _req: Request, res: Response, _next: NextFunction) => {
+	if (err instanceof CustomError) {
+		const error = err as CustomError;
+
+		return res.status(error.status).json(error.response);
+	}
+
+	return res.status(HttpStatusCodes.BAD_REQUEST).json({
+		message: ErrorsMessage.ERROR_BAD_REQUEST,
+	});
 });
 
 // Export here and start in a diff file (for testing).

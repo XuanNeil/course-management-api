@@ -7,9 +7,6 @@ export function hashPassword(password: string): string {
 }
 
 // To check a password:
-export function comparePassword(
-	password: string,
-	hashPassword: string,
-): boolean {
+export function comparePassword(password: string, hashPassword: string): boolean {
 	return bcrypt.compareSync(password, hashPassword);
 }
