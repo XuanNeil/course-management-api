@@ -20,7 +20,8 @@
 		"@typescript-eslint/no-explicit-any": "off",
 		"semi": ["error", "always"],
 		"no-unused-vars": ["off", { "vars": "all" }],
-		"@typescript-eslint/ban-types": ["error", {"extendDefaults": true, "types": {"{}": false}}]
+		"@typescript-eslint/ban-types": ["error", {"extendDefaults": true, "types": {"{}": false}}],
+		"no-useless-catch": "off"
 	},
 	"ignorePatterns": ["node_modules", "dist"]
 }
