@@ -58,6 +58,33 @@ paths:
         '422':
           $ref: '#/components/schemas/Error422'
 
+  /auth/refresh_token:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        description: Generate a new access token
+        content:
+          application/json:
+            schema:
+              properties:
+                refresh_token:
+                  type: string
+                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiYWRhY2E4NTMtOTlmOS00MDJiLWE4YzMtNjFiNTVlZWY2NGU4In0sImlhdCI6MTY2MDY0MDU2MywiZXhwIjoxNjYwNjQxMTYzfQ"
+              required:
+                - refresh_token
+      responses:
+        '201':
+          description: CREATED
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+        '422':
+          $ref: '#/components/schemas/Error422'
+
+
+
 components:
   securitySchemes:
     BearerAuth:
