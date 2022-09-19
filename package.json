@@ -5,6 +5,7 @@
 	"main": "index.ts",
 	"scripts": {
 		"dev": "nodemon -w swagger.yaml index.ts",
+		"start": "nodemon index.ts",
 		"prettier:fix": "prettier --write \"src/**/*.{ts,js}\"",
 		"lint:fix": "eslint . --ext .js,.ts --fix",
 		"typecheck": "tsc --noEmit",
