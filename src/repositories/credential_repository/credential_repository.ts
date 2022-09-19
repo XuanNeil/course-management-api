@@ -18,7 +18,8 @@ export class CredentialRepository {
 			password: hashPassword(_params.password),
 			user_id: _params.user_id,
 		});
-		return await credential.save({ session: _session });
+		await credential.save({ session: _session });
+		return credential;
 	}
 
 	async detail(

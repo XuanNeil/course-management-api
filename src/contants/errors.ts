@@ -6,7 +6,7 @@ export type ErrorResponse = {
 };
 
 export enum ErrorsMessage {
-	// ERROR_FORBIDDEN = 'ERROR FORBIDDEN',
+	ERROR_FORBIDDEN = 'ERROR FORBIDDEN',
 	ERROR_UNAUTHORIZED = 'ERROR UNAUTHORIZED',
 	ERROR_NOT_FOUND = 'ERROR NOT FOUND',
 	ERROR_EXISTED = 'ERROR EXISTED',
@@ -49,5 +49,11 @@ export class ErrorNotFound extends CustomError {
 export class ErrorExisted extends CustomError {
 	constructor(errors?: IErrors) {
 		super(ErrorsMessage.ERROR_EXISTED, HttpStatusCodes.CONFLICT, errors);
+	}
+}
+
+export class ErrorForbidden extends CustomError {
+	constructor(errors?: IErrors) {
+		super(ErrorsMessage.ERROR_FORBIDDEN, HttpStatusCodes.FORBIDDEN, errors);
 	}
 }

@@ -8,6 +8,7 @@ export class UserRepository {
 			id: new Types.ObjectId(),
 			email: _params.email,
 		});
-		return await user.save({ session: _session });
+		await user.save({ session: _session });
+		return user;
 	}
 }

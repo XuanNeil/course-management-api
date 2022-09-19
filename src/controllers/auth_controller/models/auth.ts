@@ -24,3 +24,13 @@ type TAuthControllerRegisterResponse = {
 };
 export type TAuthRegisterRequest = Request<{}, {}, TAuthControllerLoginBody>;
 export type TAuthRegisterResponse = Response<TAuthControllerRegisterResponse & ErrorResponse>;
+
+// type refresh_token
+type TAuthControllerRefreshTokenBody = {
+	refresh_token: string;
+};
+type TAuthControllerRefreshTokenResponse = {
+	access_token?: string;
+};
+export type TAuthRefreshTokenRequest = Request<{}, {}, TAuthControllerRefreshTokenBody>;
+export type TAuthRefreshTokenResponse = Response<TAuthControllerRefreshTokenResponse & ErrorResponse>;
