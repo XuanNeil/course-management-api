@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { CredentialModel, UserModel } from './models';
+import { CourseKeyModel, CourseModel, CredentialModel, UserModel } from './models';
 import { credential, user } from './data';
 
 export async function DBConnect() {
@@ -20,6 +20,8 @@ export const load = async () => {
 	try {
 		await CredentialModel.deleteMany().session(session);
 		await UserModel.deleteMany().session(session);
+		await CourseKeyModel.deleteMany().session(session);
+		await CourseModel.deleteMany().session(session);
 
 		await UserModel.insertMany(user, { session });
 		await CredentialModel.insertMany(credential, { session });
@@ -38,6 +40,8 @@ export const remove = async () => {
 	try {
 		await CredentialModel.deleteMany().session(session);
 		await UserModel.deleteMany().session(session);
+		await CourseKeyModel.deleteMany().session(session);
+		await CourseModel.deleteMany().session(session);
 
 		await session.commitTransaction();
 		await session.endSession();
