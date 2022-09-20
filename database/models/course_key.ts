@@ -39,6 +39,6 @@ const CourseKeySchema = new Schema<ICourseKeyDocument>({
 	},
 });
 
-const CourseKeyModel = mongoose.model<ICourseKeyDocument>('ApiKey', CourseKeySchema);
+const CourseKeyModel = mongoose.model<ICourseKeyDocument>('CourseKey', CourseKeySchema);
 
 export { ICourseKeyDocument, CourseKeySchema, CourseKeyModel };
