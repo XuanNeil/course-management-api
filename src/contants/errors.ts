@@ -20,13 +20,15 @@ interface IErrors {
 	[key: string]: { message: string };
 }
 
-export abstract class CustomError extends Error {
+export class CustomError extends Error {
 	public readonly status = HttpStatusCodes.BAD_REQUEST;
 	public readonly response: ErrorResponse;
 
-	constructor(message: string, status: number, errors?: IErrors) {
+	constructor(message: string, status?: number, errors?: IErrors) {
 		super(message);
-		this.status = status;
+		if (status != null) {
+			this.status = status;
+		}
 		this.response = {
 			message,
 			...(errors ? { errors } : {}),

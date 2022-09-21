@@ -1,7 +1,15 @@
 import mongoose, { Schema } from 'mongoose';
 
+export interface CourseType {
+	FrontEnd: 'Front End';
+	BackEnd: 'Back End';
+	DevOps: 'DevOps';
+	Blockchain: 'Blockchain';
+}
+
 interface ICourseDocument {
-	id: string;
+	course_id: string;
+	course_type?: CourseType;
 	course_name: string;
 	course_content: string;
 	is_delete: boolean;
@@ -10,9 +18,14 @@ interface ICourseDocument {
 }
 
 const CourseSchema = new Schema<ICourseDocument>({
-	id: {
+	course_id: {
 		type: String,
 		required: true,
+	},
+	course_type: {
+		type: String,
+		required: true,
+		default: 'Front End',
 	},
 	course_name: {
 		type: String,

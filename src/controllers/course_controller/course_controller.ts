@@ -2,23 +2,20 @@ import { validation } from '../../libs/yup';
 import { schema_course_create_body } from './validators/course';
 import { TCourseCreateRequest, TCourseCreateResponse } from './models/course';
 import mongoose from 'mongoose';
-import { courseKeyRepository, courseRepository } from '../../repositories';
+import { courseRepository } from '../../repositories';
 
 export class CourseController {
 	@validation({ schema_body: schema_course_create_body })
 	async create(req: TCourseCreateRequest, res: TCourseCreateResponse) {
-		const { course_content, course_name } = req.body;
+		const { course_type, course_content, course_name } = req.body;
+
 		const session = await mongoose.startSession();
 		await session.startTransaction();
 
 		try {
-			const course = await courseRepository.create({ course_name, course_content }, session);
-			const course_key = await courseKeyRepository.create({ course_id: course.id, course_name }, session);
+			const course = await courseRepository.create({ course_type, course_name, course_content }, session);
 
-			res.status(201).json({
-				course,
-				course_id: course_key.id,
-			});
+			res.status(201).json({ course });
 
 			await session.commitTransaction();
 			await session.endSession();

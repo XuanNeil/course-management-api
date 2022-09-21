@@ -8,9 +8,9 @@ export class CredentialMiddleware {
 	async verify(req: Request, res: Response, next: NextFunction) {
 		const access_token = getAccessToken(req);
 
-		const access_token_payload = verifyAccessToken(access_token);
+		const { id } = verifyAccessToken(access_token);
 
-		const credential = await credentialRepository.detail({ id: access_token_payload.id });
+		const credential = await credentialRepository.detail({ id });
 
 		if (!credential) {
 			throw new ErrorNotFound();
