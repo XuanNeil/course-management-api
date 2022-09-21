@@ -83,6 +83,43 @@ paths:
         '422':
           $ref: '#/components/schemas/Error422'
 
+  /course/create:
+    post:
+      tags:
+        - Course
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                course_type:
+                  type: string
+                  example: "Front End"
+                course_name:
+                  type: string
+                  example: "course name"
+                course_content:
+                  type: string
+                  example: "course content"
+              required:
+                - course_name
+                - course_content
+      responses:
+        '201':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                properties:
+                  course:
+                    $ref: '#/components/schemas/Course'
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '404':
+          $ref: '#/components/schemas/Error404'
+        '422':
+          $ref: '#/components/schemas/Error422'
+
 
 
 components:
@@ -150,6 +187,7 @@ components:
         - is_deleted
         - created_at
         - updated_at
+
     User:
       type: object
       properties:
@@ -173,6 +211,44 @@ components:
       required:
         - id
         - email
+        - is_deleted
+        - created_at
+        - updated_at
+
+    Course:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: course1234
+        course_id:
+          type: string
+          example: courseId1234
+        course_type:
+          type: string
+          example: Front End
+        course_name:
+          type: string
+          example: course name
+        course_content:
+          type: string
+          example: course content
+        is_deleted:
+          type: boolean
+          example: false
+        created_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+        updated_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+      required:
+        - id
+        - course_id
+        - course_type
+        - course_name
+        - course_content
         - is_deleted
         - created_at
         - updated_at
