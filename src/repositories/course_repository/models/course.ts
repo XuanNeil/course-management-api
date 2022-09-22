@@ -11,3 +11,7 @@ export interface ICourseRepositoryListParams {
 export interface ICourseRepositoryCountParams {
 	is_deleted?: boolean;
 }
+export interface ICourseRepositoryDetailParams {
+	course_id: string;
+	is_deleted: boolean;
+}

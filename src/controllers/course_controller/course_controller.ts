@@ -1,9 +1,16 @@
 import { validation } from '../../libs/yup';
 import { schema_course_create_body } from './validators/course';
-import { TCourseCreateRequest, TCourseCreateResponse, TCourseListRequest, TCourseListResponse } from './models/course';
+import {
+	TCourseCreateRequest,
+	TCourseCreateResponse,
+	TCourseDetailRequest,
+	TCourseDetailResponse,
+	TCourseListRequest,
+	TCourseListResponse,
+} from './models/course';
 import mongoose from 'mongoose';
 import { courseRepository } from '../../repositories';
-import { ICourseDocument } from 'database/models';
+import { ErrorNotFound } from '../../contants/errors';
 
 export class CourseController {
 	@validation({ schema_body: schema_course_create_body })
@@ -45,5 +52,16 @@ export class CourseController {
 				total_page,
 			},
 		});
+	}
+
+	async detail(req: TCourseDetailRequest, res: TCourseDetailResponse) {
+		const { course_id } = req.params;
+		const course = await courseRepository.detail({ course_id, is_deleted: false });
+
+		if (!course) {
+			throw new ErrorNotFound();
+		}
+
+		return res.status(200).json({ ...course });
 	}
 }

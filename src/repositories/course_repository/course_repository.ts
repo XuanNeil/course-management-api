@@ -3,6 +3,7 @@ import { CourseModel, ICourseDocument } from '../../../database/models';
 import {
 	ICourseRepositoryCountParams,
 	ICourseRepositoryCreateParams,
+	ICourseRepositoryDetailParams,
 	ICourseRepositoryListParams,
 } from './models/course';
 
@@ -35,5 +36,16 @@ export class CourseRepository {
 			where.is_deleted = _params.is_deleted;
 		}
 		return CourseModel.count(where).session(_session).lean();
+	}
+
+	async detail(
+		_params: ICourseRepositoryDetailParams,
+		_session: ClientSession | null = null,
+	): Promise<ICourseDocument> {
+		const where = {
+			course_id: _params.course_id,
+			is_deleted: _params.is_deleted,
+		};
+		return CourseModel.findOne(where).session(_session).lean();
 	}
 }

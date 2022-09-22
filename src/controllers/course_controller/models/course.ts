@@ -31,3 +31,12 @@ export type TCourseControllerListResponse = {
 };
 export type TCourseListRequest = Request<{}, {}, {}, TCourseControllerListQuery>;
 export type TCourseListResponse = Response<TCourseControllerListResponse & ErrorResponse>;
+
+// type detail
+export type TCourseControllerDetailParams = {
+	course_id: string;
+};
+export interface TCourseControllerDetailResponse extends ICourseDocument {}
+
+export type TCourseDetailRequest = Request<TCourseControllerDetailParams>;
+export type TCourseDetailResponse = Response<TCourseControllerDetailResponse & ErrorResponse>;
