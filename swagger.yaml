@@ -119,8 +119,42 @@ paths:
           $ref: '#/components/schemas/Error404'
         '422':
           $ref: '#/components/schemas/Error422'
-
-
+  /course/list:
+    get:
+      tags:
+        - Course
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            example: 20
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      courses:
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: '#/components/schemas/Course'
+                  - $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+        '404':
+          $ref: '#/components/schemas/Error404'
 
 components:
   securitySchemes:
@@ -252,3 +286,19 @@ components:
         - is_deleted
         - created_at
         - updated_at
+
+    Pagination:
+      type: object
+      properties:
+        paging:
+          type: object
+          properties:
+            page:
+              type: integer
+              example: 1
+            page_size:
+              type: integer
+              example: 20
+            total_page:
+              type: integer
+              example: 10
