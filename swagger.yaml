@@ -156,6 +156,31 @@ paths:
         '404':
           $ref: '#/components/schemas/Error404'
 
+  /course/:id:
+    get:
+      tags:
+        - Course
+      parameters:
+        - in: path
+          name: course_id
+          schema:
+            type: string
+            example: 632c92efcfeb4aaf720bd69
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Course'
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+        '404':
+          $ref: '#/components/schemas/Error404'
+
 components:
   securitySchemes:
     BearerAuth:
