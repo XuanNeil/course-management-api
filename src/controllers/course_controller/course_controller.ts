@@ -1,8 +1,9 @@
 import { validation } from '../../libs/yup';
 import { schema_course_create_body } from './validators/course';
-import { TCourseCreateRequest, TCourseCreateResponse } from './models/course';
+import { TCourseCreateRequest, TCourseCreateResponse, TCourseListRequest, TCourseListResponse } from './models/course';
 import mongoose from 'mongoose';
 import { courseRepository } from '../../repositories';
+import { ICourseDocument } from 'database/models';
 
 export class CourseController {
 	@validation({ schema_body: schema_course_create_body })
@@ -24,5 +25,25 @@ export class CourseController {
 			await session.endSession();
 			throw e;
 		}
+	}
+
+	async list(req: TCourseListRequest, res: TCourseListResponse) {
+		const { page = 1, page_size = 20 } = req.query;
+
+		const take = Number(page_size);
+		const skip = (Number(page) - 1) * Number(page_size);
+
+		const courses = await courseRepository.list({ take, skip, is_deleted: false });
+		const total_course = await courseRepository.count({ is_deleted: false });
+		const total_page = Math.ceil(total_course / Number(page_size));
+
+		return res.status(200).json({
+			courses,
+			paging: {
+				page,
+				page_size,
+				total_page,
+			},
+		});
 	}
 }

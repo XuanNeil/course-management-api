@@ -14,3 +14,20 @@ export type ICourseControllerCreateResponse = {
 export type TCourseCreateRequest = Request<{}, {}, TCourseControllerCreateBody>;
 
 export type TCourseCreateResponse = Response<ICourseControllerCreateResponse | ErrorResponse>;
+
+// type list course
+export type TCourseControllerListQuery = {
+	page?: number;
+	page_size?: number;
+};
+export type TPaging = {
+	page?: number;
+	page_size?: number;
+	total_page?: number;
+};
+export type TCourseControllerListResponse = {
+	courses: ICourseDocument[];
+	paging: TPaging;
+};
+export type TCourseListRequest = Request<{}, {}, {}, TCourseControllerListQuery>;
+export type TCourseListResponse = Response<TCourseControllerListResponse & ErrorResponse>;
