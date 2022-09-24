@@ -1,5 +1,5 @@
 import { validation } from '../../libs/yup';
-import { schema_course_create_body } from './validators/course';
+import { schema_course_create_body, schema_course_update_body } from './validators/course';
 import {
 	TCourseCreateRequest,
 	TCourseCreateResponse,
@@ -7,6 +7,8 @@ import {
 	TCourseDetailResponse,
 	TCourseListRequest,
 	TCourseListResponse,
+	TCourseUpdateRequest,
+	TCourseUpdateResponse,
 } from './models/course';
 import mongoose from 'mongoose';
 import { courseRepository } from '../../repositories';
@@ -62,6 +64,38 @@ export class CourseController {
 			throw new ErrorNotFound();
 		}
 
-		return res.status(200).json({ ...course });
+		return res.status(200).json({ course });
+	}
+
+	@validation({ schema_body: schema_course_update_body })
+	async update(req: TCourseUpdateRequest, res: TCourseUpdateResponse) {
+		const { course_type, course_name, course_content } = req.body;
+		const { course_id } = req.params;
+
+		const course_existed = await courseRepository.detail({ course_id, is_deleted: false });
+
+		if (!course_existed) {
+			throw new ErrorNotFound();
+		}
+
+		const session = await mongoose.startSession();
+		await session.startTransaction();
+
+		try {
+			const course = await courseRepository.update({ course_id, course_type, course_name, course_content });
+
+			if (!course) {
+				throw new ErrorNotFound();
+			}
+
+			res.status(200).json({ course });
+
+			await session.commitTransaction();
+			await session.endSession();
+		} catch (e) {
+			await session.abortTransaction();
+			await session.endSession();
+			throw e;
+		}
 	}
 }

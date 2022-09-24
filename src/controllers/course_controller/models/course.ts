@@ -36,7 +36,24 @@ export type TCourseListResponse = Response<TCourseControllerListResponse & Error
 export type TCourseControllerDetailParams = {
 	course_id: string;
 };
-export interface TCourseControllerDetailResponse extends ICourseDocument {}
+export interface TCourseControllerDetailResponse {
+	course: ICourseDocument;
+}
 
 export type TCourseDetailRequest = Request<TCourseControllerDetailParams>;
 export type TCourseDetailResponse = Response<TCourseControllerDetailResponse & ErrorResponse>;
+
+// type update
+export type TCourseControllerUpdateBody = {
+	course_type: string;
+	course_name: string;
+	course_content: string;
+};
+export type TCourseControllerUpdateParams = {
+	course_id: string;
+};
+export type TCourseControllerUpdateResponse = {
+	course: ICourseDocument;
+};
+export type TCourseUpdateRequest = Request<TCourseControllerUpdateParams, {}, TCourseControllerUpdateBody>;
+export type TCourseUpdateResponse = Response<TCourseControllerUpdateResponse & ErrorResponse>;

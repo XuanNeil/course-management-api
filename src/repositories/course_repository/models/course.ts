@@ -15,3 +15,9 @@ export interface ICourseRepositoryDetailParams {
 	course_id: string;
 	is_deleted: boolean;
 }
+export interface ICourseRepositoryUpdateParams {
+	course_id: string;
+	course_type: string;
+	course_name: string;
+	course_content: string;
+}

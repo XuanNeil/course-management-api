@@ -14,7 +14,7 @@ interface ICourseDocument {
 	course_content: string;
 	is_delete: boolean;
 	created_at: Date;
-	update_at: Date;
+	updated_at: Date;
 }
 
 const CourseSchema = new Schema<ICourseDocument>({
@@ -45,7 +45,7 @@ const CourseSchema = new Schema<ICourseDocument>({
 		required: true,
 		default: Date.now,
 	},
-	update_at: {
+	updated_at: {
 		type: Date,
 		required: true,
 		default: Date.now,

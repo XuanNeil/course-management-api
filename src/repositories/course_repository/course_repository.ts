@@ -5,6 +5,7 @@ import {
 	ICourseRepositoryCreateParams,
 	ICourseRepositoryDetailParams,
 	ICourseRepositoryListParams,
+	ICourseRepositoryUpdateParams,
 } from './models/course';
 
 export class CourseRepository {
@@ -47,5 +48,18 @@ export class CourseRepository {
 			is_deleted: _params.is_deleted,
 		};
 		return CourseModel.findOne(where).session(_session).lean();
+	}
+
+	async update(
+		_params: ICourseRepositoryUpdateParams,
+		_session: ClientSession | null = null,
+	): Promise<ICourseDocument | null> {
+		const { course_id, course_type, course_name, course_content } = _params;
+
+		return CourseModel.findOneAndUpdate(
+			{ course_id },
+			{ course_type, course_name, course_content, updated_at: Date.now() },
+			{ new: true },
+		).session(_session);
 	}
 }
