@@ -254,6 +254,41 @@ paths:
         '404':
           $ref: '#/components/schemas/Error404'
 
+  /project/create:
+    post:
+      tags:
+        - Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                project_name:
+                  type: string
+                  example: "project name example"
+                project_domain:
+                  type: string
+                  example: "https://example.com"
+              required:
+                - project_name
+                - prject_domain
+      responses:
+        '201':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                properties:
+                  project:
+                    $ref: '#/components/schemas/Project'
+                  api_key:
+                    type: string
+                    example: a127ffc4-5291-4719-9d41-afb57e149f82
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+
 components:
   securitySchemes:
     BearerAuth:
@@ -381,6 +416,71 @@ components:
         - course_type
         - course_name
         - course_content
+        - is_deleted
+        - created_at
+        - updated_at
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: project1234
+        project_id:
+          type: string
+          example: project1234
+        project_name:
+          type: string
+          example: project name
+        project_domain:
+          type: string
+          example: https://www.youtube.com
+        is_deleted:
+          type: boolean
+          example: false
+        created_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+        updated_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+      required:
+        - id
+        - project_id
+        - project_name
+        - project_domain
+        - is_deleted
+        - created_at
+        - updated_at
+
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: api_key1234
+        project_id:
+          type: string
+          format: uuid
+          example: project1234
+        project_domain:
+          type: string
+          example: https://www.youtube.com
+        is_deleted:
+          type: boolean
+          example: false
+        created_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+        updated_at:
+          type: string
+          example: 2022-08-17T02:47:16.926Z
+      required:
+        - id
+        - project_id
+        - project_domain
         - is_deleted
         - created_at
         - updated_at
