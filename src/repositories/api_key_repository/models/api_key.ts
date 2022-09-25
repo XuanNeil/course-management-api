@@ -2,3 +2,11 @@ export interface IApiKeyRepositoryCreateParams {
 	project_id: string;
 	project_domain: string;
 }
+export interface IApiKeyRepositoryDetailParams {
+	project_id: string;
+	is_deleted: boolean;
+}
+export interface IApiKeyRepositoryUpdateParams {
+	id: string;
+	project_domain: string;
+}
