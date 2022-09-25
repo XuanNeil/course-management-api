@@ -57,3 +57,11 @@ export type TCourseControllerUpdateResponse = {
 };
 export type TCourseUpdateRequest = Request<TCourseControllerUpdateParams, {}, TCourseControllerUpdateBody>;
 export type TCourseUpdateResponse = Response<TCourseControllerUpdateResponse & ErrorResponse>;
+
+// type delete
+export type TCourseControllerDeleteParams = {
+	course_id: string;
+};
+export type TCourseControllerDeleteResponse = {};
+export type TCourseDeleteRequest = Request<TCourseControllerDeleteParams>;
+export type TCourseDeleteResponse = Response<TCourseControllerDeleteResponse & ErrorResponse>;

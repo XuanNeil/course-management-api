@@ -21,3 +21,6 @@ export interface ICourseRepositoryUpdateParams {
 	course_name: string;
 	course_content: string;
 }
+export interface ICourseRepositoryDeleteParams {
+	course_id: string;
+}

@@ -3,6 +3,7 @@ import { CourseModel, ICourseDocument } from '../../../database/models';
 import {
 	ICourseRepositoryCountParams,
 	ICourseRepositoryCreateParams,
+	ICourseRepositoryDeleteParams,
 	ICourseRepositoryDetailParams,
 	ICourseRepositoryListParams,
 	ICourseRepositoryUpdateParams,
@@ -59,6 +60,18 @@ export class CourseRepository {
 		return CourseModel.findOneAndUpdate(
 			{ course_id },
 			{ course_type, course_name, course_content, updated_at: Date.now() },
+			{ new: true },
+		).session(_session);
+	}
+
+	async delete(
+		_params: ICourseRepositoryDeleteParams,
+		_session: ClientSession | null,
+	): Promise<ICourseDocument | null> {
+		const { course_id } = _params;
+		return CourseModel.findOneAndUpdate(
+			{ course_id },
+			{ is_deleted: true, updated_at: Date.now() },
 			{ new: true },
 		).session(_session);
 	}

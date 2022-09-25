@@ -12,7 +12,7 @@ interface ICourseDocument {
 	course_type?: CourseType;
 	course_name: string;
 	course_content: string;
-	is_delete: boolean;
+	is_deleted: boolean;
 	created_at: Date;
 	updated_at: Date;
 }
@@ -35,7 +35,7 @@ const CourseSchema = new Schema<ICourseDocument>({
 		type: String,
 		required: true,
 	},
-	is_delete: {
+	is_deleted: {
 		type: Boolean,
 		required: true,
 		default: false,

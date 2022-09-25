@@ -3,6 +3,8 @@ import { schema_course_create_body, schema_course_update_body } from './validato
 import {
 	TCourseCreateRequest,
 	TCourseCreateResponse,
+	TCourseDeleteRequest,
+	TCourseDeleteResponse,
 	TCourseDetailRequest,
 	TCourseDetailResponse,
 	TCourseListRequest,
@@ -92,6 +94,31 @@ export class CourseController {
 
 			await session.commitTransaction();
 			await session.endSession();
+		} catch (e) {
+			await session.abortTransaction();
+			await session.endSession();
+			throw e;
+		}
+	}
+
+	async delete(req: TCourseDeleteRequest, res: TCourseDeleteResponse) {
+		const { course_id } = req.params;
+
+		const course_existed = await courseRepository.detail({ course_id, is_deleted: false });
+
+		if (!course_existed) {
+			throw new ErrorNotFound();
+		}
+
+		const session = await mongoose.startSession();
+		await session.startTransaction();
+
+		try {
+			await courseRepository.delete({ course_id }, session);
+			await session.commitTransaction();
+			await session.endSession();
+
+			return res.status(200).json({ message: 'Delete course successfully' });
 		} catch (e) {
 			await session.abortTransaction();
 			await session.endSession();
