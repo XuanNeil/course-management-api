@@ -156,7 +156,7 @@ paths:
         '404':
           $ref: '#/components/schemas/Error404'
 
-  /course/:course_id:
+  /course/{course_id}:
     get:
       tags:
         - Course
@@ -218,6 +218,34 @@ paths:
                 properties:
                   course:
                     $ref: '#/components/schemas/Course'
+
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+        '404':
+          $ref: '#/components/schemas/Error404'
+
+  /course/{course_id}/delete:
+    delete:
+      tags:
+        - Course
+      parameters:
+        - in: path
+          name: course_id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: 'Delete course successfully'
 
         '401':
           $ref: '#/components/schemas/Error401'
