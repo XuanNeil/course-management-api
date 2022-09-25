@@ -289,6 +289,46 @@ paths:
         '403':
           $ref: '#/components/schemas/Error403'
 
+  /project/{project_id}/update:
+    put:
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                project_name:
+                  type: string
+                  example: "project name example"
+                project_domain:
+                  type: string
+                  example: "https://example.com"
+              required:
+                - project_name
+                - project_domain
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  project:
+                    $ref: '#/components/schemas/Project'
+                  api_key:
+                    type: string
+                    example: a127ffc4-5291-4719-9d41-afb57e149f82
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
 components:
   securitySchemes:
     BearerAuth:
