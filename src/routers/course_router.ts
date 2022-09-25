@@ -12,4 +12,4 @@ router.get('/:course_id', credentialMiddleware.verify, courseController.detail);
 router.put('/:course_id/update', credentialMiddleware.verify, courseController.update);
 router.delete('/:course_id/delete', credentialMiddleware.verify, courseController.delete);
 
-export const courseRouter: Router = router;
+export const courseRouters: Router = router;

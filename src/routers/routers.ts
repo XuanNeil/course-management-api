@@ -1,12 +1,14 @@
 import { Router } from 'express';
-import { authRouter } from './auth_router';
-import { courseRouter } from './course_router';
+import { authRouters } from './auth_router';
+import { courseRouters } from './course_router';
+import { projectRouters } from './project_router';
 
 // Constants
 const router: Router = Router();
 
 // Paths
-router.use('/auth', authRouter);
-router.use('/course', courseRouter);
+router.use('/auth', authRouters);
+router.use('/course', courseRouters);
+router.use('/project', projectRouters);
 
 export const mainRouters: Router = router;
