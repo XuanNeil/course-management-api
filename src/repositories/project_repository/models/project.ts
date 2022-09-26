@@ -14,3 +14,11 @@ export interface IProjectRepositoryUpdateParams {
 export interface IProjectRepositoryDeleteParams {
 	project_id: string;
 }
+export interface IProjectRepositoryListParams {
+	is_deleted?: boolean;
+	take?: number;
+	skip?: number;
+}
+export interface IProjectRepositoryCountParams {
+	is_deleted: boolean;
+}

@@ -13,3 +13,7 @@ export interface IApiKeyRepositoryUpdateParams {
 export interface IApiKeyRepositoryDeleteParams {
 	id: string;
 }
+
+export interface IApiKeyRepositoryListParams {
+	is_deleted: boolean;
+}

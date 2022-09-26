@@ -2,6 +2,7 @@ import {
 	IApiKeyRepositoryCreateParams,
 	IApiKeyRepositoryDeleteParams,
 	IApiKeyRepositoryDetailParams,
+	IApiKeyRepositoryListParams,
 	IApiKeyRepositoryUpdateParams,
 } from './models/api_key';
 import { ClientSession, Types } from 'mongoose';
@@ -44,5 +45,13 @@ export class ApiKeyRepository {
 		return ApiKeyModel.findOneAndUpdate({ id: _params.id }, { is_deleted: true, updated_at: Date.now() }, { new: true })
 			.session(_session)
 			.lean();
+	}
+
+	async list(_params: IApiKeyRepositoryListParams, _session: ClientSession | null = null): Promise<IApiKeyDocument[]> {
+		const where: any = {};
+		if (_params.is_deleted !== undefined) {
+			where.is_deleted = _params.is_deleted;
+		}
+		return ApiKeyModel.find(where).session(_session).lean();
 	}
 }

@@ -37,3 +37,18 @@ type TProjectControllerDeleteParams = {
 type TProjectControllerDeleteResponse = {};
 export type TProjectDeleteRequest = Request<TProjectControllerDeleteParams>;
 export type TProjectDeleteResponse = Response<TProjectControllerDeleteResponse & ErrorResponse>;
+
+// type list
+type TProjectControllerListQuery = {
+	page?: number;
+	page_size?: number;
+};
+interface IProject extends IProjectDocument {
+	api_key?: string;
+}
+type TProjectControllerListResponse = {
+	items: IProject[];
+	paging: {};
+};
+export type TProjectListRequest = Request<{}, {}, {}, TProjectControllerListQuery>;
+export type TProjectListResponse = Response<TProjectControllerListResponse & ErrorResponse>;

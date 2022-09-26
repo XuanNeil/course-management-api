@@ -1,10 +1,12 @@
 import {
+	IProjectRepositoryCountParams,
 	IProjectRepositoryCreateParams,
 	IProjectRepositoryDeleteParams,
 	IProjectRepositoryDetailParams,
+	IProjectRepositoryListParams,
 	IProjectRepositoryUpdateParams,
 } from './models/project';
-import { ClientSession, Schema, Types } from 'mongoose';
+import { ClientSession, Types } from 'mongoose';
 import { IProjectDocument, ProjectModel } from '../../../database/models';
 
 export class ProjectRepository {
@@ -49,5 +51,26 @@ export class ProjectRepository {
 			{ is_deleted: true, updated_at: Date.now() },
 			{ new: true },
 		).session(_session);
+	}
+
+	async list(
+		_params: IProjectRepositoryListParams,
+		_session: ClientSession | null = null,
+	): Promise<IProjectDocument[]> {
+		const where: any = {};
+
+		if (_params.is_deleted !== undefined) {
+			where.is_deleted = _params.is_deleted;
+		}
+
+		return ProjectModel.find(where, {}, { limit: _params.take, skip: _params.skip }).session(_session).lean();
+	}
+
+	async count(_params: IProjectRepositoryCountParams, _session: ClientSession | null = null): Promise<number> {
+		const where: any = {};
+		if (_params.is_deleted !== undefined) {
+			where.is_deleted = _params.is_deleted;
+		}
+		return ProjectModel.count(where).session(_session).lean();
 	}
 }

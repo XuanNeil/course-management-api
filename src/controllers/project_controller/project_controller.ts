@@ -5,6 +5,8 @@ import {
 	TProjectUpdateResponse,
 	TProjectDeleteRequest,
 	TProjectDeleteResponse,
+	TProjectListRequest,
+	TProjectListResponse,
 } from './models/project';
 import { validation } from '../../libs/yup';
 import { schema_project_create_body, schema_project_update_body } from './validators/project';
@@ -12,6 +14,7 @@ import mongoose from 'mongoose';
 import { apiKeyRepository, projectRepository } from '../../../src/repositories';
 import { ErrorNotFound } from '../../contants';
 import { ProjectRepository } from 'src/repositories/project_repository';
+import { projectRouters } from 'src/routers/project_router';
 
 export class ProjectController {
 	@validation({ schema_body: schema_project_create_body })
@@ -93,5 +96,33 @@ export class ProjectController {
 			await session.endSession();
 			throw e;
 		}
+	}
+
+	async list(req: TProjectListRequest, res: TProjectListResponse) {
+		const { page = 1, page_size = 20 } = req.query;
+
+		const take = Number(page_size);
+		const skip = (Number(page) - 1) * Number(page_size);
+
+		const projects = await projectRepository.list({ take, skip, is_deleted: false });
+		const api_keys = await apiKeyRepository.list({ is_deleted: false });
+
+		const project_api_key = projects.map((project) => {
+			const api_key = api_keys.find((key) => key.project_id === project.project_id);
+
+			if (api_key) {
+				return {
+					...project,
+					api_key: api_key.id,
+				};
+			}
+
+			return project;
+		});
+
+		const total_project = await projectRepository.count({ is_deleted: false });
+		const total_page = Math.ceil(total_project / Number(page_size));
+
+		return res.status(200).json({ items: project_api_key, paging: { page, page_size, total_page } });
 	}
 }
