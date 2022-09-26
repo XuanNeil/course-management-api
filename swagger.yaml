@@ -329,6 +329,35 @@ paths:
           $ref: '#/components/schemas/Error401'
         '403':
           $ref: '#/components/schemas/Error403'
+
+  /project/{project_id}/delete:
+    delete:
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: 'Delete Project Successfully'
+
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+        '404':
+          $ref: '#/components/schemas/Error404'
+
 components:
   securitySchemes:
     BearerAuth:
