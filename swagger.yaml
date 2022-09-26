@@ -358,6 +358,46 @@ paths:
         '404':
           $ref: '#/components/schemas/Error404'
 
+  /project/list:
+    get:
+      tags:
+        - Project
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            example: 20
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: '#/components/schemas/Project'
+                            - properties:
+                                api_key:
+                                  type: string
+                                  example: 2df7bf73-62d3-4f45-8d7b-62a103a58b4e
+                  - $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+        '404':
+          $ref: '#/components/schemas/Error404'
 components:
   securitySchemes:
     BearerAuth:
