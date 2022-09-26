@@ -1,5 +1,6 @@
 import {
 	IApiKeyRepositoryCreateParams,
+	IApiKeyRepositoryDeleteParams,
 	IApiKeyRepositoryDetailParams,
 	IApiKeyRepositoryUpdateParams,
 } from './models/api_key';
@@ -32,6 +33,15 @@ export class ApiKeyRepository {
 	): Promise<IApiKeyDocument | null> {
 		const { id, project_domain } = _params;
 		return ApiKeyModel.findOneAndUpdate({ id }, { project_domain, updated_at: Date.now() }, { new: true })
+			.session(_session)
+			.lean();
+	}
+
+	async delete(
+		_params: IApiKeyRepositoryDeleteParams,
+		_session: ClientSession | null,
+	): Promise<IApiKeyDocument | null> {
+		return ApiKeyModel.findOneAndUpdate({ id: _params.id }, { is_deleted: true, updated_at: Date.now() }, { new: true })
 			.session(_session)
 			.lean();
 	}

@@ -3,12 +3,15 @@ import {
 	TProjectCreateRequest,
 	TProjectUpdateRequest,
 	TProjectUpdateResponse,
+	TProjectDeleteRequest,
+	TProjectDeleteResponse,
 } from './models/project';
 import { validation } from '../../libs/yup';
 import { schema_project_create_body, schema_project_update_body } from './validators/project';
 import mongoose from 'mongoose';
 import { apiKeyRepository, projectRepository } from '../../../src/repositories';
 import { ErrorNotFound } from '../../contants';
+import { ProjectRepository } from 'src/repositories/project_repository';
 
 export class ProjectController {
 	@validation({ schema_body: schema_project_create_body })
@@ -57,6 +60,34 @@ export class ProjectController {
 			await session.endSession();
 
 			return res.status(200).json({ project, api_key: api_key?.id });
+		} catch (e) {
+			await session.abortTransaction();
+			await session.endSession();
+			throw e;
+		}
+	}
+
+	async delete(req: TProjectDeleteRequest, res: TProjectDeleteResponse) {
+		const { project_id } = req.params;
+
+		const project_existed = await projectRepository.detail({ project_id, is_deleted: false });
+		const api_key_existed = await apiKeyRepository.detail({ project_id, is_deleted: false });
+
+		if (!project_existed || !api_key_existed) {
+			throw new ErrorNotFound();
+		}
+
+		const session = await mongoose.startSession();
+		await session.startTransaction();
+
+		try {
+			await projectRepository.delete({ project_id }, session);
+			await apiKeyRepository.delete({ id: api_key_existed.id }, session);
+
+			await session.commitTransaction();
+			await session.endSession();
+
+			return res.status(200).json({ message: 'Delete Project Successfully' });
 		} catch (e) {
 			await session.abortTransaction();
 			await session.endSession();

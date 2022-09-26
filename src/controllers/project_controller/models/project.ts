@@ -29,3 +29,11 @@ type TProjectControllerUpdateResponse = {
 };
 export type TProjectUpdateRequest = Request<TProjectControllerUpdateParams, {}, TProjectControllerUpdateBody>;
 export type TProjectUpdateResponse = Response<TProjectControllerUpdateResponse & ErrorResponse>;
+
+// type delete
+type TProjectControllerDeleteParams = {
+	project_id: string;
+};
+type TProjectControllerDeleteResponse = {};
+export type TProjectDeleteRequest = Request<TProjectControllerDeleteParams>;
+export type TProjectDeleteResponse = Response<TProjectControllerDeleteResponse & ErrorResponse>;

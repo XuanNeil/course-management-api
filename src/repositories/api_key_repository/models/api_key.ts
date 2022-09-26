@@ -10,3 +10,6 @@ export interface IApiKeyRepositoryUpdateParams {
 	id: string;
 	project_domain: string;
 }
+export interface IApiKeyRepositoryDeleteParams {
+	id: string;
+}

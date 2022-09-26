@@ -11,3 +11,6 @@ export interface IProjectRepositoryUpdateParams {
 	project_name: string;
 	project_domain: string;
 }
+export interface IProjectRepositoryDeleteParams {
+	project_id: string;
+}

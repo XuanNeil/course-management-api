@@ -1,5 +1,6 @@
 import {
 	IProjectRepositoryCreateParams,
+	IProjectRepositoryDeleteParams,
 	IProjectRepositoryDetailParams,
 	IProjectRepositoryUpdateParams,
 } from './models/project';
@@ -34,6 +35,18 @@ export class ProjectRepository {
 		return ProjectModel.findOneAndUpdate(
 			{ project_id },
 			{ project_name, project_domain, updated_at: Date.now() },
+			{ new: true },
+		).session(_session);
+	}
+
+	async delete(
+		_params: IProjectRepositoryDeleteParams,
+		_session: ClientSession | null,
+	): Promise<IProjectDocument | null> {
+		const { project_id } = _params;
+		return ProjectModel.findOneAndUpdate(
+			{ project_id },
+			{ is_deleted: true, updated_at: Date.now() },
 			{ new: true },
 		).session(_session);
 	}
