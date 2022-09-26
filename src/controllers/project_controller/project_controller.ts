@@ -7,6 +7,8 @@ import {
 	TProjectDeleteResponse,
 	TProjectListRequest,
 	TProjectListResponse,
+	TProjectDetailRequest,
+	TProjectDetailResponse,
 } from './models/project';
 import { validation } from '../../libs/yup';
 import { schema_project_create_body, schema_project_update_body } from './validators/project';
@@ -124,5 +126,17 @@ export class ProjectController {
 		const total_page = Math.ceil(total_project / Number(page_size));
 
 		return res.status(200).json({ items: project_api_key, paging: { page, page_size, total_page } });
+	}
+
+	async detail(req: TProjectDetailRequest, res: TProjectDetailResponse) {
+		const { project_id } = req.params;
+		const project = await projectRepository.detail({ project_id, is_deleted: false });
+		const api_key = await apiKeyRepository.detail({ project_id, is_deleted: false });
+
+		if (!project || !api_key) {
+			throw new ErrorNotFound();
+		}
+
+		return res.status(200).json({ ...project, api_key: api_key.id });
 	}
 }

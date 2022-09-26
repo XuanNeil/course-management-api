@@ -52,3 +52,10 @@ type TProjectControllerListResponse = {
 };
 export type TProjectListRequest = Request<{}, {}, {}, TProjectControllerListQuery>;
 export type TProjectListResponse = Response<TProjectControllerListResponse & ErrorResponse>;
+
+// type detail
+type TProjectControllerDetailParams = {
+	project_id: string;
+};
+export type TProjectDetailRequest = Request<TProjectControllerDetailParams>;
+export type TProjectDetailResponse = Response<IProject & ErrorResponse>;
