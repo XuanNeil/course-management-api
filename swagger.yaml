@@ -398,6 +398,36 @@ paths:
           $ref: '#/components/schemas/Error403'
         '404':
           $ref: '#/components/schemas/Error404'
+
+  /project/{project_id}:
+    get:
+      tags:
+        - Project
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+            example: 1ec52d05-1a03-4b23-b6e5-aa233c725054
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Project'
+                  - properties:
+                      api_key:
+                        type: string
+                        example: 2df7bf73-62d3-4f45-8d7b-62a103a58b4e
+        '401':
+          $ref: '#/components/schemas/Error401'
+        '403':
+          $ref: '#/components/schemas/Error403'
+        '404':
+          $ref: '#/components/schemas/Error404'
+
 components:
   securitySchemes:
     BearerAuth:
