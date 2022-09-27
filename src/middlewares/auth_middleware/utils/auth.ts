@@ -1,12 +1,12 @@
 import { ICredentialDocument } from '../../../../database/models';
-import { TCredentialMiddlewareRequest } from '../models/credential';
+import { TAuthMiddlewareRequest } from '../models/auth';
 import { Request } from 'express';
 import { ErrorUnauthorized } from '../../../contants/errors';
 
 export function setCredentialRequest(req: Request, credential: ICredentialDocument): void {
-	const new_req = req as TCredentialMiddlewareRequest;
+	const new_req = req as TAuthMiddlewareRequest;
 
-	new_req.credential = credential;
+	new_req.auth = credential;
 }
 
 export function getAccessToken(req: Request): string {

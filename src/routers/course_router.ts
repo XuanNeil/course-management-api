@@ -1,15 +1,15 @@
 import { Router } from 'express';
 import { courseController } from '../controllers';
-import { credentialMiddleware } from '../middlewares';
+import { authMiddleware } from '../middlewares';
 
 // Constants
 const router: Router = Router();
 
 // Paths
-router.post('/create', credentialMiddleware.verify, courseController.create);
-router.get('/list', credentialMiddleware.verify, courseController.list);
-router.get('/:course_id', credentialMiddleware.verify, courseController.detail);
-router.put('/:course_id/update', credentialMiddleware.verify, courseController.update);
-router.delete('/:course_id/delete', credentialMiddleware.verify, courseController.delete);
+router.post('/create', authMiddleware.verify, courseController.create);
+router.get('/list', authMiddleware.verify, courseController.list);
+router.get('/:course_id', authMiddleware.verify, courseController.detail);
+router.put('/:course_id/update', authMiddleware.verify, courseController.update);
+router.delete('/:course_id/delete', authMiddleware.verify, courseController.delete);
 
 export const courseRouters: Router = router;

@@ -1,3 +1,3 @@
-import { CredentialMiddleware } from './credential_middleware';
+import { AuthMiddleware } from './auth_middleware';
 
-export const credentialMiddleware = new CredentialMiddleware();
+export const authMiddleware = new AuthMiddleware();
